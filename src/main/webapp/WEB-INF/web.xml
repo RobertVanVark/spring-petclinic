@@ -10,7 +10,7 @@
 
     <!-- When using Spring jpa, use the following: -->
     <context-param>
-        <param-name>spring.profiles.active</param-name>
+        <param-name>spring.profiles.default</param-name>
         <param-value>jpa</param-value>
     </context-param>
 
@@ -111,8 +111,8 @@
     </filter-mapping>
 
     <!--  	No need for welcome-file declaration here.
-    		See inside spring/mvc-core-config.xml : 
-    		<mvc:view-controller path="/" view-name="welcome" /> 
+    		See inside spring/mvc-core-config.xml :
+    		<mvc:view-controller path="/" view-name="welcome" />
     -->
 
 </web-app>
