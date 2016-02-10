@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class SeleniumTest {
@@ -18,7 +19,18 @@ public class SeleniumTest {
 
 	@BeforeClass
 	public static void setUpClass() throws IOException, AWTException {
-		driver = new FirefoxDriver();
+		String userName = System.getProperty("USER", "dev");
+		if ("dev".equals(userName)) {
+			String Xport = System.getProperty("lmportal.xvfb.id", ":99");
+			final File firefoxPath = new File(System.getProperty("lmportal.deploy.firefox.path", "/usr/bin/firefox"));
+			FirefoxBinary firefoxBinary = new FirefoxBinary(firefoxPath);
+			firefoxBinary.setEnvironmentProperty("DISPLAY", Xport);
+
+			WebDriver driver = new FirefoxDriver(firefoxBinary, null);
+			driver.get("http://google.com/");
+		} else {
+			driver = new FirefoxDriver();
+		}
 	}
 
 	@AfterClass
@@ -34,9 +46,13 @@ public class SeleniumTest {
 		super();
 	}
 
-	protected void makeScreenshot(WebDriver driver, Class clzz, int imageCounter) throws IOException {
-		File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		String filename = String.format("target/selenium/%s/screenshot%02d.png", clzz.getSimpleName(), imageCounter);
+	protected void makeScreenshot(WebDriver driver, Class clzz, int imageCounter)
+			throws IOException {
+		File screenshot = ((TakesScreenshot) driver)
+				.getScreenshotAs(OutputType.FILE);
+		String filename = String.format(
+				"target/selenium/%s/screenshot%02d.png", clzz.getSimpleName(),
+				imageCounter);
 		FileUtils.copyFile(screenshot, new File(filename));
 	}
 
