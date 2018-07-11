@@ -1,11 +1,11 @@
-image: java:8
+image: maven:3-jdk-8
 
 stages:
   - build
 
 build:
   stage: build
-  script: ./mvnw package
+  script: "mvn package -B"
   artifacts:
     paths:
       - target/petclinic.war
